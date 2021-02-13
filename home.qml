@@ -6,43 +6,12 @@ import QtQuick.Controls 2.14
 Item {
 
     id: window
-    //title: qsTr("Hello Kostas")
     width: 1600
     height: 900
-
-
     visible: true
-
-
-//    property var rightBinding
-
-    //color: 'transparent'
-
-
-
-
     ListModel {
         id: suggestionsModel
     }
-
-
-
-
-
-
-
-
-    //Component.onCompleted: {movieModel.append({"position":"Movie"})}
-
-
-
-
-
-
-
-
-
-
     Rectangle {
         id: background_body
         x: 0
