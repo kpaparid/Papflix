@@ -135,7 +135,7 @@ Item {
                 width: 93
                 height: 28
                 color: infoSuggestion.infocolor
-                text: "IMDb: <b>" +sm.vote+"</b>"
+                text: "Vote: <b>" +sm.vote+"</b>"
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0
                 leftPadding: 0

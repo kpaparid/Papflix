@@ -6,7 +6,6 @@ import requests
 from Cast import Cast
 from difflib import SequenceMatcher
 import os
-# import distance
 from pyjarowinkler import distance
 import Levenshtein
 import shutil 
@@ -20,31 +19,6 @@ tmdb.api_key = '03417c8113bb7602f27eed0cf17f86e7'
 
 class Movie():
     """This module does blah blah."""
-    id = ''
-    title = ''
-    year = ''
-    jsan = ''
-    overview = ''
-    genres = ''
-    runtime = ''
-    vote = ''
-    popularity = ''
-    vote_imdb = ''
-    imdb_id = ''
-    stars = ''
-    stars_poster = ''
-    character = ''
-    #path = 'None'
-    poster = ''
-    backdrop_path = ''
-    trailer = ''
-    file_name = ''
-    folder = ''
-    credit = []
-    path = ''
-    similarity = 0
-    scrap=''
-
 
 
     def get_db_entry(self):
@@ -78,28 +52,20 @@ class Movie():
     def jarow_similarity(self, a, b):
         score = distance.get_jaro_distance(a, b, winkler=True, scaling=0.1) * 100
         return score    
-
     def score(self, a, b):
         score = self.levenshtein_similarity(a, b) + self.jarow_similarity(a, b)
         print(a + ' vs ' + str(b.encode(encoding='UTF-8',errors='ignore')))
         print('jaro '+ str(self.levenshtein_similarity(a, b)) +'     '+'leven '+ str( self.jarow_similarity(a, b)))
         return score
-
-
-
     def similar(self, a, b):
-        # print(a+'<<<<<<<<<>>>>>>>>>>>>>>>'+b)
         return Levenshtein.distance(a.lower(), b.lower())
-        # return SequenceMatcher(None, a.lower(), b.lower()).ratio()
-    def search_movie_json(self, name, year, folder, similarity):
-        
+    def search_movie_json(self, name, year, folder, similarity):        
         name = name.replace('&', 'and').replace(':',' ').lower().strip()
         if name[-2:] == ' 1': name = name.replace(' 1','')
         og_name = name
         results = ('', '', '', similarity)
         if year == 'null':
             year = ''
-        scrapped = []
         
         filename = [name, '']
 
@@ -134,11 +100,7 @@ class Movie():
                             
 
                             r_name = " ".join(r_name.split())
-                            # print(r_name)
                             r_year = r['release_date'].split('-')[0]
-                            r_title = r_name +' '+ r_year
-                            r_original_title = r['original_title']
-                            # r_distance = distance.jaccard(filename[0], r_name.lower())
                             r_distance = self.score(name, r_name.lower()) - 5 * count_split - (i + 1)*(count_split + 1) * 10
                             if ':' in r_name:
                                 s_name = r_name.split(':')
@@ -165,8 +127,6 @@ class Movie():
                                     print('=============================================================================================                          '+str(results[3]) )
                                     self.similarity = results[3] 
                                     return results[2]
-                                # print('bazw'+str(tupple[0]))
-                                # print('=============================================================================================                          '+str(results[0]))
             
             if len(filename) == 1: continueWhile = False
             else:
@@ -213,7 +173,6 @@ class Movie():
         print('=============================================================================================                          '+str(results[0].encode(encoding='UTF-8',errors='ignore')) + ' '+ str(results[1]))
         print('=============================================================================================                          '+str(results[3]) )
         return results[2]                            
-
     def extract_name_year(self, name):
         """This module does blah blah."""
         name = self.clear_name(name)
@@ -228,10 +187,8 @@ class Movie():
             name = name.replace(year, '')
         else:
             year = str(number[len(number)-1])
-            # year = str(number[0])
             name = name.replace(year, '')
         return (name, year)
-
     def query_duration(self, id):
         json = self.get_json_movie(id)
         if 'runtime' in json and json['runtime'] is not None:
@@ -248,7 +205,6 @@ class Movie():
         print(url.replace('https://api.themoviedb.org/3/search/movie?api_key=03417c8113bb7602f27eed0cf17f86e7&', ''))            
         response = requests.get(url)
         return response.json()
-
     def clear_name(self, name):
         """This module does blah blah."""
         name = name.replace('[', ' ')\
@@ -494,7 +450,6 @@ class Movie():
         
         
         return name.rstrip()
-
     def get_json(self, name, year, folder, duration):
         """This module does blah blah."""
         print(name)
@@ -503,14 +458,12 @@ class Movie():
         response = requests.get('https://image.tmdb.org/t/p/original/'
                                     + js['results'][0]['poster_path'])
         return js
-
     def get_json_movie(self, id):
         """This module does blah blah."""
         url = 'https://api.themoviedb.org/3/movie/' +str(id) +'?api_key='\
         + tmdb.api_key + '&language=en-US'
         response = requests.get(url)
         return response.json()
-
     def get_trailer(self, id):
         """This module does blah blah."""
         url = 'https://api.themoviedb.org/3/movie/' +str(id) +'/videos?api_key='\
@@ -523,7 +476,6 @@ class Movie():
             return response.json()['results'][0]['key']
         else:
             return 'null'
-
     def get_credits(self, id):
         """This module does blah blah."""
         url = 'https://api.themoviedb.org/3/movie/' +str(id) +'/credits?api_key=' + tmdb.api_key
@@ -542,7 +494,6 @@ class Movie():
             self.stars = self.stars[:-2]
             self.character = self.character[:-2]
             self.stars_poster = self.stars_poster[:-2]
-
     def db_import(self, row):
         """This module does blah blah."""
         self.id = row[0]
@@ -567,11 +518,6 @@ class Movie():
         self.path = row[19]
         
         # self.download_files()
-        
-        
-                                     
-
-
     def __init__(self, flag, args):
         """This module does blah blah."""
         if flag == True:
@@ -612,14 +558,11 @@ class Movie():
             if R.status_code != 200:
                 raise ConnectionError('could not download {}\nerror code: {}'.format(url, R.status_code))
             open(completeName, 'wb').write(R.content)  
-            
-          
     def db_make(self, args):
         """This module does blah blah."""
         self.file_name = args[0]
         self.folder = args[1]
         self.path = args[2]
-        # self.duration = args[3]
         self.stars = ''
         self.stars_poster = ''
         self.character = ''
@@ -627,18 +570,16 @@ class Movie():
         name = extraction[0]
         year = extraction[1]
 
-        # self.jsan = self.get_json(name, year, self.folder)
         self.id = self.search_movie_json(name, year, self.folder, 1)
-        self.jsan = self.get_json_movie(self.id)
-        # print(self.jsan)
+        self.json = self.get_json_movie(self.id)
         
         
         
-        self.title = self.jsan['title']
-        self.year = self.jsan['release_date'].split('-', 1)[0]
-        self.overview = self.jsan['overview']
-        self.vote = self.jsan['vote_average']
-        self.popularity = self.jsan['popularity']
+        self.title = self.json['title']
+        self.year = self.json['release_date'].split('-', 1)[0]
+        self.overview = self.json['overview']
+        self.vote = self.json['vote_average']
+        self.popularity = self.json['popularity']
         self.trailer = self.get_trailer(self.id)
         self.credits = self.get_credits(self.id)
 
@@ -646,32 +587,32 @@ class Movie():
         
         
 
-        if len(self.jsan['genres']) != 0:
-            for gen in self.jsan['genres']:
+        if len(self.json['genres']) != 0:
+            for gen in self.json['genres']:
                 self.genres += gen['name'] +', '
             self.genres = self.genres [:-2]
         else:
             self.genres = ''
-        if self.jsan['backdrop_path'] is None:
+        if self.json['backdrop_path'] is None:
             self.backdrop_path = 'null'
         else:
-            self.backdrop_path = self.jsan['backdrop_path']
+            self.backdrop_path = self.json['backdrop_path']
 
-        if self.jsan['poster_path'] is None:
+        if self.json['poster_path'] is None:
             self.poster = 'null'
         else:
-            self.poster = self.jsan['poster_path']
+            self.poster = self.json['poster_path']
 
 
-        if self.jsan['runtime'] is None:
+        if self.json['runtime'] is None:
             self.runtime = 'null'
         
         else:
-            self.runtime = str(self.jsan['runtime'])
-        if self.jsan['imdb_id'] is None:
+            self.runtime = str(self.json['runtime'])
+        if self.json['imdb_id'] is None:
             self.imdb_id = 'null'
         else:
-            self.imdb_id = self.jsan['imdb_id']
+            self.imdb_id = self.json['imdb_id']
 
         # self.download_files()
         

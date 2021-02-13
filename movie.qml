@@ -225,7 +225,7 @@ Item {
                 color: "#e43167"
                 font.pixelSize: 40
                 minimumPixelSize: 20
-                text: qsTr(" Vote"+movieItem.vote)
+                text: qsTr(" Vote "+movieItem.vote)
                 visible: true
                 anchors.bottomMargin: 42
                 anchors.topMargin: 8

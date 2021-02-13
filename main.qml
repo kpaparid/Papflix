@@ -53,6 +53,7 @@ Item {
             GradientStop {
                 position: 1
                 color: '#1c030a'
+                //color: 'white'
             }
         }
         anchors.right: parent.right

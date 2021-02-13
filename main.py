@@ -31,7 +31,7 @@ class MyApp(QObject):
     
     def db_query(self, sql):
         """This module does blah blah."""
-        database = mdb.connect('localhost', 'root', '', 'papflix')
+        database = mdb.connect(host='localhost',user='root',passwd='marmi', port=3306, database="papflix")
         cursor = database.cursor()
         cursor.execute(sql)
         database.close()
@@ -39,7 +39,7 @@ class MyApp(QObject):
         """This module does blah blah."""
 
         try:
-            database = mdb.connect('localhost', 'root', '', 'papflix')
+            database = mdb.connect(host='localhost',user='root',passwd='marmi', port=3306, database="papflix")
             cursor = database.cursor()
             cursor.execute(query)
             results = cursor.fetchall()
@@ -52,7 +52,8 @@ class MyApp(QObject):
 
     def db_insert(self, val):
         """This module does blah blah."""
-        database = mdb.connect('localhost', 'root', '', 'papflix')
+        
+        database = mdb.connect(host='localhost',user='root',passwd='marmi', port=3306, database="papflix")
         sql = "INSERT INTO `movie`(`ID`,\
         `title`,\
         `year`,\
@@ -61,24 +62,24 @@ class MyApp(QObject):
         `runtime`,\
         `popularity`,\
         `vote`,\
-        `voteImdb`,\
-        `imdbID`,\
+        `vote_imdb`,\
+        `imdb_id`,\
         `stars`,\
-        `starsPoster`,\
-        `charName`,\
+        `stars_poster`,\
+        `char_name`,\
         `poster`,\
         `backdrop_path`,\
         `trailer`,\
-        `filename`,\
+        `file_name`,\
         `folder`,\
         `path`,\
         `similarity`) \
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
         ON DUPLICATE KEY UPDATE \
         ID=VALUES(ID), title=VALUES(title), year=VALUES(year), overview=VALUES(overview), genres=VALUES(genres), runtime=VALUES(runtime), popularity=VALUES(popularity),\
-        vote=VALUES(vote), voteImdb=VALUES(voteImdb), imdbID=VALUES(imdbID), stars=VALUES(stars), starsPoster=VALUES(starsPoster),\
-        charName=VALUES(charName), poster=VALUES(poster), backdrop_path=VALUES(backdrop_path), trailer=VALUES(trailer),\
-        filename=VALUES(filename), folder=VALUES(folder), path=VALUES(path), similarity=VALUES(similarity)"
+        vote=VALUES(vote), vote_imdb=VALUES(voteImdb), imdb_id=VALUES(imdbID), stars=VALUES(stars), stars_poster=VALUES(stars_poster),\
+        char_name=VALUES(char_name), poster=VALUES(poster), backdrop_path=VALUES(backdrop_path), trailer=VALUES(trailer),\
+        file_name=VALUES(file_name), folder=VALUES(folder), path=VALUES(path), similarity=VALUES(similarity)"
 
         cursor = database.cursor()
         try:
@@ -98,7 +99,7 @@ class MyApp(QObject):
     def db_connection(self):
         """This module does blah blah."""
         try:
-            database = mdb.connect('localhost', 'root', '', 'papflix')
+            database = mdb.connect(host='localhost',user='root',passwd='marmi', port=3306, database="papflix")
             print('Connection', 'Database Connected Successfully')
             cursor = database.cursor()
             cursor.execute("SELECT VERSION()")
@@ -117,7 +118,7 @@ class MyApp(QObject):
         text = query[2].replace(' OR', ',').replace(' AND', ',') +':'
         if text == ':': text = "Random Movies:"
         query[0] = query[0].replace('Year', '`year`')
-        query[1] = query[1].replace('Rating', '`voteImdb`')
+        query[1] = query[1].replace('Rating', '`vote_imdb`')
         query[3] = query[3].replace('Sort By:', 'ORDER BY').replace(
             'Name', '`title` ASC').replace('Year', '`year` DESC').replace('Vote', '`vote` DESC')
         query[2] = query[2].replace('Action', "`genres` LIKE '%Action%'")\
@@ -288,12 +289,12 @@ class MyApp(QObject):
 
         
         print('background')
-        mov = self.db_read('SELECT IMDBID FROM `movie` WHERE voteIMDB = ""')
+        mov = self.db_read('SELECT IMDBID FROM `movie` WHERE vote_imdb = ""')
         print('background2')
         for m in mov:
             imdb_id = m[0].replace('tt','')
             rating = ia.get_movie(imdb_id).get('rating')
-            sql = "UPDATE movie SET voteIMDB = '" + str(rating) + "' WHERE voteIMDB = ''"
+            sql = "UPDATE movie SET vote_imdb = '" + str(rating) + "' WHERE vote_imdb = ''"
             # print(sql)
             print('BACKGROUND RATING '+ str(rating))
             print('BACKGROUND id '+ str(imdb_id))
@@ -321,9 +322,7 @@ class MyApp(QObject):
 
 
 if __name__ == '__main__':
-
-
-    
+   
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
     main = MyApp()
