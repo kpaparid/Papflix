@@ -81,7 +81,6 @@ class Movie:
 
     def score(self, a, b):
         """Combine the two similarity methods to get score"""
-
         score = self.levenshtein_similarity(a, b) + self.jarow_similarity(a, b)
         print(a + ' vs ' + str(b.encode(encoding='UTF-8', errors='ignore')))
         print('jaro ' + str(self.levenshtein_similarity(a, b)) + '     ' + 'leven ' + str(self.jarow_similarity(a, b)))
@@ -247,7 +246,6 @@ class Movie:
               + name
         if year != '':
             url += '&year=' + year
-        print(url.replace('https://api.themoviedb.org/3/search/movie?api_key=03417c8113bb7602f27eed0cf17f86e7&', ''))
         response = requests.get(url)
         return response.json()
 

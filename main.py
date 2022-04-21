@@ -3,25 +3,36 @@ import os
 import os.path
 import subprocess
 import sys
+import sqlite3
 
 import pymysql as mdb
 from PySide2.QtCore import QObject, Signal, Slot, QUrl
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
-from imdb import IMDb
+# from imdb import IMDb
+from imdb import Cinemagoer
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
+from pprint import pprint
 
+from sqlalchemy import true
 from custom_models import PersonModel
 from movie import Movie
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL = PersonModel()
 SUGGESTIONS = PersonModel()
-ia = IMDb()
+# ia = IMDb()
+
+ia = Cinemagoer()
 
 
 def db_query(sql):
     """Query DB"""
-    database = mdb.connect(host='localhost', user='root', passwd='marmi', port=3306, database="papflix")
+    # database = mdb.connect(host='localhost', user='root',
+    #                        passwd='marmi', port=3306, database="papflix")
+    database = sqlite3.connect('movies.db')
+
     cursor = database.cursor()
     cursor.execute(sql)
     database.close()
@@ -30,7 +41,9 @@ def db_query(sql):
 def db_read(query):
     """Read Movies from DB"""
     try:
-        database = mdb.connect(host='localhost', user='root', passwd='marmi', port=3306, database="papflix")
+        # database = mdb.connect(host='localhost', user='root',
+        #                        passwd='marmi', port=3306, database="papflix")
+        database = sqlite3.connect('movies.db')
         cursor = database.cursor()
         cursor.execute(query)
         results = cursor.fetchall()
@@ -44,7 +57,9 @@ def db_read(query):
 
 def db_insert(val):
     """Insert val in DB """
-    database = mdb.connect(host='localhost', user='root', passwd='marmi', port=3306, database="papflix")
+    # database = mdb.connect(host='localhost', user='root',
+    #                        passwd='marmi', port=3306, database="papflix")
+    database = sqlite3.connect('movies.db')
     sql = "INSERT INTO `movie`(`ID`,\
     `title`,\
     `year`,\
@@ -92,13 +107,23 @@ def db_insert(val):
 def db_connection():
     """Connect to DB"""
     try:
-        database = mdb.connect(host='localhost', user='root', passwd='marmi', port=3306, database="papflix")
-        print('Connection', 'Database Connected Successfully')
-        cursor = database.cursor()
-        cursor.execute("SELECT VERSION()")
-        data = cursor.fetchone()
-        print("Database version : %s " % data)
-        database.close()
+        # database = mdb.connect(host='localhost', user='root', passwd='marmi', port=3306, database="papflix")
+        # print('Connection', 'Database Connected Successfully')
+        # cursor = database.cursor()
+        # cursor.execute("SELECT VERSION()")
+        # data = cursor.fetchone()
+        # print("Database version : %s " % data)
+        # database.close()
+
+        # print("Database version")
+        # CONNECTION_STRING = "mongodb+srv://kpaparid:Paparidis1993@cluster0.8gzcu.mongodb.net/canteenDatabase"
+        # from pymongo import MongoClient
+        # client = MongoClient(CONNECTION_STRING)
+        # c = client['canteenDatabase']
+        # item_details = c["meals"].find_one()
+        # print(item_details)
+        database = sqlite3.connect('movies.db')
+
     except mdb.Error as err:
         print('Connection', 'Failed To Connect Database')
         print(err)
@@ -110,7 +135,8 @@ def populate_suggestions():
     SUGGESTIONS.clearAll()
     limit = "20"
 
-    movies = db_read("SELECT * FROM movie WHERE backdrop_path NOT LIKE 'null' ORDER BY RAND() LIMIT " + limit)
+    movies = db_read(
+        "SELECT * FROM movie WHERE backdrop_path NOT LIKE 'null' ORDER BY RAND() LIMIT " + limit)
     count = 0
     for row in movies:
         if count < 20:
@@ -144,7 +170,8 @@ def background_worker():
     for m in mov:
         imdb_id = m[0].replace('tt', '')
         rating = ia.get_movie(imdb_id).get('rating')
-        sql = "UPDATE movie SET vote_imdb = '" + str(rating) + "' WHERE vote_imdb = ''"
+        sql = "UPDATE movie SET vote_imdb = '" + \
+            str(rating) + "' WHERE vote_imdb = ''"
         # print(sql)
         print('BACKGROUND RATING ' + str(rating))
         print('BACKGROUND id ' + str(imdb_id))
@@ -167,10 +194,12 @@ def get_length(filename):
     print(str(dur) + ' min')
     return dur
 
+
 def folder_name(path, number):
     """This module does blah blah."""
 
     return path.split('\\')[-number]
+
 
 class MyApp(QObject):
     Title = 'Joker'
@@ -187,7 +216,8 @@ class MyApp(QObject):
 
         query = query.split('|')
         text = query[2].replace(' OR', ',').replace(' AND', ',') + ':'
-        if text == ':': text = "Random Movies:"
+        if text == ':':
+            text = "Random Movies:"
         query[0] = query[0].replace('Year', '`year`')
         query[1] = query[1].replace('Rating', '`vote_imdb`')
         query[3] = query[3].replace('Sort By:', 'ORDER BY').replace(
@@ -234,7 +264,8 @@ class MyApp(QObject):
         """Searches database for @search"""
         print('Searching for ' + search)
         query = ''
-        query = "SELECT * FROM movie WHERE `title` LIKE '%" + search + "%' OR `stars` LIKE '%" + search + "%' ORDER BY title "
+        query = "SELECT * FROM movie WHERE `title` LIKE '%" + search + \
+            "%' OR `stars` LIKE '%" + search + "%' ORDER BY title "
         print(query)
         movies = db_read(query)
         MODEL.clearAll()
@@ -319,7 +350,7 @@ class MyApp(QObject):
 
         # self.initDB(path)
 
-        flag = False
+        flag = True
         if flag:
             self.db_init(path)
         else:
