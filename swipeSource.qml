@@ -15,7 +15,6 @@ Item {
     anchors.fill: parent
 
     Image {
-
         id: image0
         anchors.right: parent.right
         anchors.left: parent.left

@@ -238,17 +238,13 @@ ApplicationWindow {
                             id: searchImage
                             x: 165
                             width: 16
-                            source: "../../Desktop/search.png"
+                            source: "./resources/search.png"
                             anchors.topMargin: 7
                             sourceSize.width: 25
                             anchors.top: parent.top
                             fillMode: Image.Stretch
                             anchors.bottomMargin: 7
                             anchors.rightMargin: 5
-                            //                    MouseArea {
-                            //                        id: mouseArea1
-                            //                        anchors.fill: parent
-                            //                    }
                             anchors.bottom: parent.bottom
                             anchors.right: parent.right
                             sourceSize.height: 25
@@ -526,7 +522,7 @@ ApplicationWindow {
                             anchors.topMargin: 7
                             anchors.left: filtertext.left
                             anchors.leftMargin: 3
-                            source: "../../Desktop/custon.png"
+                            source: "./resources/filter.png"
                         }
                         background: Rectangle {
                             id: filterrect
@@ -581,30 +577,30 @@ ApplicationWindow {
             width: 30
             height: 30
             anchors.top: parent.top
-            anchors.topMargin: -2
             anchors.right: parent.right
-            anchors.rightMargin: 0
+            anchors.topMargin: 5
+            anchors.rightMargin: 5
             opacity: 0.7
             color: 'transparent'
             Image {
                 id: xclose
-                width: 10
-                height: 10
+                width: 13
+                height: 13
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 fillMode: Image.PreserveAspectCrop
-                source: "../../Desktop/Untitled-2.png"
+                source: "./resources/close.png"
             }
             MouseArea{
                 anchors.fill: parent
                 hoverEnabled: true
-                onEntered: {xclose.source = "../../Desktop/xclose white.png"
+                onEntered: {xclose.source = "./resources/xclose white.png"
                             rectclose.color = pink
                             xclose.width= 15
                             xclose.height= 15
                             rectclose.opacity= 1
                 }
-                onExited: {xclose.source = "../../Desktop/Untitled-2.png"
+                onExited: {xclose.source = "./resources/close.png"
                            rectclose.color = 'transparent'
                             xclose.width= 13
                             xclose.height= 13
@@ -624,9 +620,9 @@ ApplicationWindow {
             width: 30
             height: 30
             anchors.top: parent.top
-            anchors.topMargin: -2
             anchors.right: rectclose.left
-            anchors.rightMargin: 0
+            anchors.topMargin: 5
+            anchors.rightMargin: 5
             opacity: 0.7
             Image {
                 id: xmax
@@ -635,7 +631,7 @@ ApplicationWindow {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 fillMode: Image.PreserveAspectCrop
-                source: "../../Desktop/rect.png"
+                source: "./resources/maximize.png"
             }
             MouseArea{
                 anchors.fill: parent
@@ -649,12 +645,12 @@ ApplicationWindow {
                     xmax.width= 13
                     xmax.height= 13}
                 onClicked: {
-
                     if(window3.width === Screen.width) {
-                                        window3.showNormal()
-                                    }
+                        window3.showNormal()   
+                        xmax.source= "./resources/maximize.png"
+                    }
                     else{
-
+                        xmax.source= "./resources/unmaximize.png"
                         window3.showMaximized()
                         window3.setGeometry(screen.virtualX, 0,screen.width, screen.desktopAvailableHeight)
                     }
@@ -668,11 +664,11 @@ ApplicationWindow {
             color: 'transparent'
             id: rectmini
             width: 30
-            height: 25
+            height: 30
             anchors.top: parent.top
-            anchors.topMargin: 0
             anchors.right: rextmax.left
-            anchors.rightMargin: 0
+            anchors.topMargin: 5
+            anchors.rightMargin: 5
             opacity: 0.7
             Image {
                 id: xmini
@@ -681,7 +677,7 @@ ApplicationWindow {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 fillMode: Image.PreserveAspectCrop
-                source: "../../Desktop/minimize.png"
+                source: "./resources/minimize.png"
             }
             MouseArea{
                 anchors.fill: parent

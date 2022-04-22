@@ -85,12 +85,12 @@ class PersonModel(QAbstractListModel):
         starsPoster = ''
         for p in s_p:
             if(p == 'null'):
-                p = 'unknown.png'
+                p = './resources/unknown.png'
             else:
                 p = 'https://image.tmdb.org/t/p/w138_and_h175_face/'+p   
             starsPoster += ', ' + p
 
-        if(poster == 'null'): poster = 'unknown.png'
+        if(poster == 'null'): poster = './resources/unknown.png'
         
         
         starsPoster = starsPoster[2:]       

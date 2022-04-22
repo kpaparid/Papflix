@@ -10,7 +10,7 @@ Rectangle {
     
     property var grey: '#bdbebf'
 
-    height: controlSwitch.checked ? 50 + sort.anchors.topMargin + sort.height + filterButton.height +145: 50 + sort.height + filterButton.height + sort.anchors.topMargin
+    height: controlSwitch.checked ? 110 + sort.anchors.topMargin + sort.height + filterButton.height +145: 110 + sort.height + filterButton.height + sort.anchors.topMargin
     gradient: Gradient {
         GradientStop {
             position: 0
@@ -30,14 +30,14 @@ Rectangle {
         x: 182
         visible: controlSwitch.checked ? true : false
         anchors.bottom: filterButton.top
-        anchors.bottomMargin: 0
         clip: true
         anchors.top: sort.bottom
-        anchors.topMargin: 10
         anchors.right: parent.right
-        anchors.rightMargin: 0
         anchors.left: parent.left
         anchors.leftMargin: 0
+        anchors.rightMargin: 0
+        anchors.topMargin: 40
+        anchors.bottomMargin: 20
 
         TextArea {
             id: advancedSort
@@ -640,10 +640,10 @@ Rectangle {
                 anchors.left: parent.left
                 orientation: RangeSlider.SnapAlways
                 stepSize: 100
-                to: 2020
-                from: 1975
-                first.value: 1995
-                second.value: 2005
+                to: 2022
+                from: 1950
+                first.value: 1950
+                second.value: 2022
                 property var val1: Math.round(first.value)
                 property var val2: Math.round(second.value)
                 enabled: !controlSwitch.checked
@@ -987,7 +987,7 @@ Rectangle {
         onClicked: {
             console.log('clicked')
             MyApp.submit_filter(advancedYear.text + '|' + advancedRating.text + '|' + advancedGenre.text + '|' + advancedSort.text)
-            filter.destroy()
+            // filter.destroy()
         }
 
         Rectangle {

@@ -21,12 +21,12 @@ class Movie:
 
     id = ''
     title = ''
-    year = ''
+    year = 0
     json = ''
     overview = ''
     genres = ''
     runtime = ''
-    vote = ''
+    vote = 0.0
     popularity = ''
     vote_imdb = ''
     imdb_id = ''
@@ -82,8 +82,6 @@ class Movie:
     def score(self, a, b):
         """Combine the two similarity methods to get score"""
         score = self.levenshtein_similarity(a, b) + self.jarow_similarity(a, b)
-        print(a + ' vs ' + str(b.encode(encoding='UTF-8', errors='ignore')))
-        print('jaro ' + str(self.levenshtein_similarity(a, b)) + '     ' + 'leven ' + str(self.jarow_similarity(a, b)))
         return score
 
     def similar(self, a, b):
@@ -112,14 +110,13 @@ class Movie:
             if json['total_results'] != 0:
                 if triggered == False:
                     name = filename[0]
-                    print('FIRST RESULTS AT               ' + name)
                     triggered = True
 
                 i = 0
                 for i in range(len(json['results'])):
                     if i <= 10:
                         r = json['results'][i]
-                        max_score = 200 + 50 + 20 - 10  # 200 (similarity) + 50 (year) + 20 (poster) - 10 (index)
+                        max_score = 200 + 50 + 20 - 10
                         if ('release_date' in r and r['release_date'] != "" and r['vote_count'] > 0):
                             r_id = r['id']
                             r_name = r['title'].replace('&', 'and').replace('-', ' ').replace('⅓', '').replace('½', '')
@@ -146,41 +143,28 @@ class Movie:
                             if year != '' and abs(int(r_year) - int(year)) <= 1: r_distance += 50
                             if r['backdrop_path'] is not None: r_distance += 20
                             if folder == 'fOn': r_distance -= 25
-                            print('score ' + str(r_distance))
                             r_distance = r_distance * 100 / max_score
-                            print(str(r_distance) + '%')
                             tupple = (r_name, r_year, r_id, r_distance)
 
                             if results[3] < tupple[3]:
                                 results = tupple
                                 if results[3] == 100:
-                                    print(
-                                        '=============================================================================================                          ' + str(
-                                            results[0].encode(encoding='UTF-8', errors='ignore')) + ' ' + str(
-                                            results[1]))
-                                    print(
-                                        '=============================================================================================                          ' + str(
-                                            results[3]))
                                     self.similarity = results[3]
                                     return results[2]
 
             if len(filename) == 1:
                 continue_while = False
             else:
-                print('split')
                 filename = filename[0].rsplit(' ', 1)
                 if filename[0][-2:] == ' 1':
                     filename[0] = filename[0].replace(' 1', '')
-                    print('replace 1')
                 if triggered: count_split += 1
                 if count_split == 3: continue_while = False
                 if filename[0] == 'the': continue_while = False
-                # print('=======================================>split '+str(filename[0]))
             if len(filename) > 1 and filename[1] != '':
                 self.scrap += filename[1] + ', '
             if (len(filename) == 1 or continue_while == False) and year != '':
                 count_split = 0
-                print('yOn')
                 continue_while = True
                 filename = [og_name, '']
                 name = og_name
@@ -188,41 +172,28 @@ class Movie:
                 triggered = False
 
             if (len(filename) == 1 or continue_while == False) and year == '' and folder != 'fOn':
-                print('fOn')
-
                 count_split = 0
                 continue_while = True
                 extraction = self.extract_name_year(folder)
                 folder = extraction[0]
                 year = extraction[1]
-                print('fon:' + str(year))
                 name = folder.replace('&', 'and').replace(':', ' ').lower().strip()
                 filename = [folder.replace('&', 'and').replace(':', ' ').lower().strip(), '']
                 folder = 'fOn'
                 triggered = False
 
             if len(filename) == 1 and year == '' and folder == 'fOn':
-                print('break')
                 continue_while = False
-
         self.similarity = results[3]
-        print(
-            '=============================================================================================                          ' + str(
-                results[0].encode(encoding='UTF-8', errors='ignore')) + ' ' + str(results[1]))
-        print(
-            '=============================================================================================                          ' + str(
-                results[3]))
         return results[2]
 
     def extract_name_year(self, name):
         """Extract year from filename if it exists"""
         name = self.clear_name(name)
-        # print('after replacements	' + name)
         year = re.sub("[^0-9]", " ", name)
         number = [int(s) for s in year.split() if s.isdigit() and len(s) == 4]
         if len(number) == 0:
             year = ''
-            # print('year null')
         elif len(number) == 1:
             year = str(number[0])
             name = name.replace(year, '')
@@ -240,7 +211,6 @@ class Movie:
 
     def query_movie(self, name, year):
         """Search movie in the API"""
-        # print('searching: ' + name + '#	year:' + year)
         url = 'https://api.themoviedb.org/3/search/movie?api_key=' \
               + tmdb.api_key + '&query=' \
               + name
@@ -487,16 +457,12 @@ class Movie:
 
         for r in repl:
             name = name.replace(r, ' ')
-
         name = name.replace(' -', ' ')
         name = re.sub('\\s\\s+', ' ', name)
-        print(name)
-
         return name.rstrip()
 
     def get_json(self, name, year, folder):
         """search for json"""
-        print(name)
         js = self.search_movie_json(name, year, folder, 1)
         return js
 
@@ -560,8 +526,6 @@ class Movie:
         self.path = row[18]
         self.path = row[19]
 
-        # self.download_files()
-
     def __init__(self, flag, args):
         """imports data from DB if they exist else search for movies in specified directory"""
         if flag == True:
@@ -586,8 +550,7 @@ class Movie:
                     dir_path = path % os.environ['APPDATA']
                     if not os.path.exists(dir_path):
                         os.makedirs(dir_path)
-                    # complete_name = os.path.join(dir_path, str(i))
-                    shutil.copy('C://Users//Marmi//Desktop/unknown.png', dir_path + str(i) + '.png')
+                    shutil.copy('./resources/unknown.png', dir_path + str(i) + '.png')
                 else:
                     self.download_image(str(self.id) + '//stars_posters',
                                         'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + stars_p, i)
@@ -603,7 +566,6 @@ class Movie:
         complete_name = os.path.join(dir_path, str(name) + '.png')
 
         if not os.path.exists(complete_name):
-            print('doesnt exist ' + complete_name)
             R = requests.get(url, allow_redirects=True)
             if R.status_code != 200:
                 raise ConnectionError('could not download {}\nerror code: {}'.format(url, R.status_code))
@@ -625,9 +587,9 @@ class Movie:
         self.json = self.get_json_movie(self.id)
 
         self.title = self.json['title']
-        self.year = self.json['release_date'].split('-', 1)[0]
+        self.year = int(self.json['release_date'].split('-', 1)[0])
         self.overview = self.json['overview']
-        self.vote = self.json['vote_average']
+        self.vote = float(self.json['vote_average'])
         self.popularity = self.json['popularity']
         self.trailer = self.get_trailer(self.id)
         self.credits = self.get_credits(self.id)
@@ -658,4 +620,3 @@ class Movie:
         else:
             self.imdb_id = self.json['imdb_id']
 
-        # self.download_files()

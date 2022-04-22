@@ -86,12 +86,14 @@ Item {
             }
 
             GradientStop {
-                position:0.5
-                color: '#2D0510'
+                position:0.3
+                // color: '#2D0510'
+                color: blackblack
             }
             GradientStop {
                 position:1
-                color: black
+                // color: blackblack
+                color: '#2D0510'
             }
         }
 
@@ -277,8 +279,6 @@ Item {
         anchors.left: parent.left
         anchors.topMargin: 0
         opacity: 1
-
-        //source: "../../Desktop/og_image.jpg"
         fillMode: Image.Stretch
     }
 
