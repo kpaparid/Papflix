@@ -1,10 +1,7 @@
-"""This module does blah blah."""
-from PySide2 import QtWidgets
 import re
 from tmdbv3api import TMDb
 import requests
-from Cast import Cast
-from difflib import SequenceMatcher
+from cast import Cast
 import os
 from pyjarowinkler import distance
 import Levenshtein
@@ -550,7 +547,7 @@ class Movie:
                     dir_path = path % os.environ['APPDATA']
                     if not os.path.exists(dir_path):
                         os.makedirs(dir_path)
-                    shutil.copy('./resources/unknown.png', dir_path + str(i) + '.png')
+                    shutil.copy('../resources/unknown.png', dir_path + str(i) + '.png')
                 else:
                     self.download_image(str(self.id) + '//stars_posters',
                                         'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + stars_p, i)

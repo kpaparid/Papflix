@@ -85,12 +85,12 @@ class PersonModel(QAbstractListModel):
         starsPoster = ''
         for p in s_p:
             if(p == 'null'):
-                p = './resources/unknown.png'
+                p = '../resources/unknown.png'
             else:
                 p = 'https://image.tmdb.org/t/p/w138_and_h175_face/'+p   
             starsPoster += ', ' + p
 
-        if(poster == 'null'): poster = './resources/unknown.png'
+        if(poster == 'null'): poster = '../resources/unknown.png'
         
         
         starsPoster = starsPoster[2:]       
@@ -100,11 +100,6 @@ class PersonModel(QAbstractListModel):
                              "characters1":characters, "trailer1":trailer, "backdrop_path1":'https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/'+backdrop_path, "path1":path})
         self.endInsertRows()
 
-    # @Slot(int, str, int)
-    # def editPerson(self, row, name, age):
-    #     ix = self.index(row, 0)
-    #     self.persons[row] = {'movieName1': name, 'year1': age}
-    #     self.dataChanged.emit(ix, ix, self.roleNames())
 
     @Slot(int)
     def deletePerson(self, row):
