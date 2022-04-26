@@ -1,12 +1,13 @@
 import re
 from tmdbv3api import TMDb
 import requests
-from cast import Cast
 import os
 from pyjarowinkler import distance
 import Levenshtein
 import shutil
 from imdb import IMDb
+
+from .cast import Cast
 
 ia = IMDb()
 tmdb = TMDb()

@@ -1,18 +1,27 @@
-"""This module does blah blah."""
 import os
 import os.path
 import subprocess
 import sys
 import sqlite3
+from pathlib import Path
+
+# path_root = Path(__file__).parents[2]
+# print(path_root)
+# sys.path.append(str(path_root))
+
+# sys.path.append('..')
+# print(sys.path)
+from pathlib import Path
+import sys
 from tkinter.messagebox import NO
 from PySide2.QtCore import QObject, Signal, Slot, QUrl
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
 from imdb import Cinemagoer
-
 from sqlalchemy import true
-from custom_models import PersonModel
-from movie import Movie
+from .model.movie import Movie;
+from .model.custom_models import PersonModel
+
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL = PersonModel()
@@ -288,8 +297,7 @@ class MyApp(QObject):
                 sys.exit(-1)
 
 
-if __name__ == '__main__':
-
+def run():
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
     main = MyApp()
@@ -297,8 +305,14 @@ if __name__ == '__main__':
     engine.rootContext().setContextProperty('SuggestionsModel', SUGGESTIONS)
     engine.rootContext().setContextProperty("MyApp", main)
     engine.load(QUrl.fromLocalFile(
-        os.path.join(CURRENT_DIR, './qt/mainWindow.qml')))
+        os.path.join(CURRENT_DIR, 'qt/mainWindow.qml')))
+    # engine.load(QUrl.fromLocalFile(
+    #     os.path.join('..\qt\mainWindow.qml')))
+    # print(os.path.join(CURRENT_DIR, 'qt/mainWindow.qml'))
     if not engine.rootObjects():
         sys.exit(-1)
-    print('exit')
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()
+    
