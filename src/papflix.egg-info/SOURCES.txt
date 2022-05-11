@@ -1,9 +1,15 @@
 LICENSE
 MANIFEST.in
 README.md
+myDB.db
 pyproject.toml
-setup.cfg
+requirements.txt
 setup.py
+src/papflix.egg-info/PKG-INFO
+src/papflix.egg-info/SOURCES.txt
+src/papflix.egg-info/dependency_links.txt
+src/papflix.egg-info/requires.txt
+src/papflix.egg-info/top_level.txt
 src/papflix_package/__init__.py
 src/papflix_package/main.py
 src/papflix_package/model/__init__.py
@@ -29,7 +35,3 @@ src/papflix_package/resources/search.png
 src/papflix_package/resources/unknown.png
 src/papflix_package/resources/unmaximize.png
 src/papflix_package/resources/xclose white.png
-src/papflix_package_kpaparid.egg-info/PKG-INFO
-src/papflix_package_kpaparid.egg-info/SOURCES.txt
-src/papflix_package_kpaparid.egg-info/dependency_links.txt
-src/papflix_package_kpaparid.egg-info/top_level.txt

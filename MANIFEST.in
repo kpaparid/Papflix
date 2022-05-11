@@ -1,2 +1,4 @@
 include src/papflix_package/qt/*.qml
 include src/papflix_package/resources/*.png
+include requirements.txt
+include myDB.db
