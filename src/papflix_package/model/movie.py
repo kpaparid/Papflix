@@ -40,7 +40,6 @@ class Movie:
     scrap = ''
 
     def get_db_entry(self):
-        """This module does blah blah."""
         return (self.id,
                 self.title,
                 self.year,

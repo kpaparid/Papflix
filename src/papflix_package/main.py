@@ -105,18 +105,6 @@ def populate_movies(database, limit):
                         row[14], row[18])
 
 
-# def background_worker(database):
-#     mov = db_read(database, 'SELECT IMDBID FROM movies WHERE vote_imdb = ""')
-#     for m in mov:
-#         imdb_id = m[0].replace('tt', '')
-#         rating = ia.get_movie(imdb_id).get('rating')
-#         sql = "UPDATE movies SET vote_imdb = '" + \
-#             str(rating) + "' WHERE vote_imdb = ''"
-#         print('BACKGROUND RATING ' + str(rating))
-#         print('BACKGROUND id ' + str(imdb_id))
-#         db_read(database, sql)
-
-
 def get_length(filename):
     result = subprocess.run(['cmd.exe', '/c', 'ffprobe', '-v', 'error',
                              '-show_entries', 'format=duration', '-of',
@@ -130,8 +118,6 @@ def get_length(filename):
 
 
 def folder_name(path, number):
-    """This module does blah blah."""
-
     return path.split('\\')[-number]
 
 
@@ -295,9 +281,6 @@ def run():
     engine.rootContext().setContextProperty("MyApp", main)
     engine.load(QUrl.fromLocalFile(
         os.path.join(CURRENT_DIR, 'qt/mainWindow.qml')))
-    # engine.load(QUrl.fromLocalFile(
-    #     os.path.join('..\qt\mainWindow.qml')))
-    # print(os.path.join(CURRENT_DIR, 'qt/mainWindow.qml'))
     if not engine.rootObjects():
         sys.exit(-1)
     sys.exit(app.exec_())
