@@ -24,8 +24,8 @@ Papflix requires the following to run:
 ## Usage
 
 ```python
-import papflix
-papflix.main()
+from papflix_package import main
+main.run()
 
 ```
 ## Contributing
