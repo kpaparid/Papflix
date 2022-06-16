@@ -11,7 +11,7 @@ Papflix is a movie organizer software made in Python and Qt. Provides automatic 
 ## Requirements
 
 Papflix requires the following to run:
--OpenSSL
+- OpenSSL
 
 
 ## Installation
