@@ -25,6 +25,11 @@ Papflix requires the following to run:
 
 ```python
 from papflix_package import main
+
+# import movies by giving a path in the function
+main.run(path)
+
+# once the Database is filled, the path is no longer needed
 main.run()
 
 ```
