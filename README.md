@@ -5,7 +5,7 @@ Papflix is a movie organizer software made in Python and Qt. Provides automatic 
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install papflix.
 
 ```bash
 pip install papflix-package-kpaparid
